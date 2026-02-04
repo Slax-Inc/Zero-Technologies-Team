@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Technologies Team - Изучение микроконтроллеров и одноплатных компьютеров</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a5fb4;
+            --secondary-color: #26a269;
+            --dark-color: #2d2d2d;
+            --light-color: #f8f9fa;
+            --gray-color: #e0e0e0;
+            --text-color: #333;
+            --text-light: #666;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f5f7fa;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .logo span {
+            color: var(--secondary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover:after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #0d4a9c 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #1f8b4d;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid white;
+            margin-left: 15px;
+        }
+
+        .btn-outline:hover {
+            background-color: white;
+            color: var(--primary-color);
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 20px auto 0;
+        }
+
+        /* About */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+        }
+
+        .about-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .about-image:hover img {
+            transform: scale(1.03);
+        }
+
+        /* Hardware */
+        .hardware-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .hardware-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .hardware-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .hardware-img {
+            height: 200px;
+            background-color: var(--gray-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+        }
+
+        .hardware-info {
+            padding: 25px;
+        }
+
+        .hardware-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .hardware-info p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .status-available {
+            background-color: rgba(38, 162, 105, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .status-coming {
+            background-color: rgba(26, 95, 180, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Activities */
+        .activities {
+            background-color: var(--light-color);
+        }
+
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .activity-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .activity-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .activity-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        /* Contact */
+        .contact-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+        }
+
+        .contact-info h3 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .contact-details {
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(26, 95, 180, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .footer-logo span {
+            color: var(--secondary-color);
+        }
+
+        .footer-links h4, .footer-social h4 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .footer-links h4:after, .footer-social h4:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary-color);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 2.3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+            }
+
+            nav.active {
+                display: block;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 80px 0;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .btn-outline {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="images/logo.png" alt="Zero Technologies Team Logo">
+                    <h1>Zero <span>Technologies</span></h1>
+                </div>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="#home">Главная</a></li>
+                        <li><a href="#about">О нас</a></li>
+                        <li><a href="#hardware">Оборудование</a></li>
+                        <li><a href="#activities">Деятельность</a></li>
+                        <li><a href="#contact">Контакты</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Изучаем микроконтроллеры и создаём операционные системы для одноплатных компьютеров</h2>
+            <p>Zero Technologies Team - это команда энтузиастов, занимающихся изучением микроконтроллеров, разработкой кода, созданием простых ОС и дистрибутивов Linux для одноплатных компьютеров.</p>
+            <a href="#about" class="btn">Узнать больше</a>
+            <a href="#contact" class="btn btn-outline">Связаться с нами</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>О нашей команде</h2>
+                <p>Мы объединяем энтузиастов для изучения и разработки в области микроконтроллеров и одноплатных компьютеров</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Наша миссия</h3>
+                    <p>Zero Technologies Team - это сообщество разработчиков и исследователей, которые стремятся освоить микроконтроллеры и одноплатные компьютеры на практике. Мы верим, что лучший способ изучить технологии - это создавать что-то своими руками.</p>
+                    <p>Наша команда занимается не только написанием кода для микроконтроллеров, но и созданием простых операционных систем и специализированных дистрибутивов Linux для одноплатных компьютеров, оптимизированных под конкретные задачи.</p>
+                    <p>Мы постоянно расширяем наш парк оборудования и приглашаем присоединиться всех, кто интересуется embedded-разработкой, IoT и системным программированием.</p>
+                </div>
+                
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Команда разработчиков">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hardware Section -->
+    <section id="hardware" style="background-color: #f8f9fa;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Наше оборудование</h2>
+                <p>Парк микроконтроллеров и одноплатных компьютеров, с которыми мы работаем</p>
+            </div>
+            
+            <div class="hardware-grid">
+                <!-- Existing hardware -->
+                <div class="hardware-card">
+                    <div class="hardware-img">
+                        <i class="fas fa-microchip fa-3x"></i>
+                    </div>
+                    <div class="hardware-info">
+                        <h3>ESP32 CP2102</h3>
+                        <p>Мощный микроконтроллер с Wi-Fi и Bluetooth, идеален для IoT проектов.</p>
+                        <span class="status status-available">В наличии</span>
+                    </div>
+                </div>
+                
+                <div class="hardware-card">
+                    <div class="hardware-img">
+                        <i class="fas fa-project-diagram fa-3x"></i>
+                    </div>
+                    <div class="hardware-info">
+                        <h3>Arduino UNO R3</h3>
+                        <p>Классическая плата для начинающих, отличный старт в мир микроконтроллеров.</p>
+                        <span class="status status-available">В наличии</span>
+                    </div>
+                </div>
+                
+                <div class="hardware-card">
+                    <div class="hardware-img">
+                        <i class="fas fa-compact-disc fa-3x"></i>
+                    </div>
+                    <div class="hardware-info">
+                        <h3>AtTiny85</h3>
+                        <p>Крошечный, но мощный 8-битный микроконтроллер для компактных проектов.</p>
+                        <span class="status status-available">В наличии</span>
+                    </div>
+                </div>
+                
+                <div class="hardware-card">
+                    <div class="hardware-img">
+                        <i class="fas fa-brain fa-3x"></i>
+                    </div>
+                    <div class="hardware-info">
+                        <h3>AtTiny13A</h3>
+                        <p>Сверхкомпактный микроконтроллер для простых задач с минимальным энергопотреблением.</p>
+                        <span class="status status-available">В наличии</span>
+                    </div>
+                </div>
+                
+                <div class="hardware-card">
+                    <div class="hardware-img">
+                        <i class="fas fa-camera fa-3x"></i>
+                    </div>
+                    <div class="hardware-info">
+                        <h3>ESP32 CAM</h3>
+                        <p>Микроконтроллер с камерой для проектов компьютерного зрения и видеонаблюдения.</p>
+                        <span class="status status-available">В наличии</span>
+                    </div>
+                </div>
+                
+                <!-- Coming soon hardware -->
+                <div class="hardware-card">
+                    <div class="hardware-img">
+                        <i class="fas fa-server fa-3x"></i>
+                    </div>
+                    <div class="hardware-info">
+                        <h3>Banana PI M4 Berry</h3>
+                        <p>Мощный одноплатный компьютер с поддержкой 4K и гигабитным Ethernet.</p>
+                        <span class="status status-coming">Скоро будет</span>
+                    </div>
+                </div>
+                
+                <div class="hardware-card">
+                    <div class="hardware-img">
+                        <i class="fas fa-desktop fa-3x"></i>
+                    </div>
+                    <div class="hardware-info">
+                        <h3>Orange PI ZERO</h3>
+                        <p>Компактный и доступный одноплатный компьютер для различных проектов.</p>
+                        <span class="status status-coming">Скоро будет</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section id="activities" class="activities">
+        <div class="container">
+            <div class="section-title">
+                <h2>Наша деятельность</h2>
+                <p>Основные направления, которыми занимается наша команда</p>
+            </div>
+            
+            <div class="activities-grid">
+                <div class="activity-card">
+                    <div class="activity-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h3>Изучение микроконтроллеров</h3>
+                    <p>Практическое освоение программирования микроконтроллеров различных архитектур, работа с периферией и датчиками.</p>
+                </div>
+                
+                <div class="activity-card">
+                    <div class="activity-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Написание кода</h3>
+                    <p>Разработка программного обеспечения для микроконтроллеров на C, C++, MicroPython и других языках.</p>
+                </div>
+                
+                <div class="activity-card">
+                    <div class="activity-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Создание простых ОС</h3>
+                    <p>Разработка минималистичных операционных систем для одноплатных компьютеров с фокусом на эффективность.</p>
+                </div>
+                
+                <div class="activity-card">
+                    <div class="activity-icon">
+                        <i class="fab fa-linux"></i>
+                    </div>
+                    <h3>Дистрибутивы Linux</h3>
+                    <p>Сборка специализированных дистрибутивов Linux для одноплатных компьютеров, оптимизированных под конкретные задачи.</p>
+                </div>
+                
+                <div class="activity-card">
+                    <div class="activity-icon">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <h3>IoT проекты</h3>
+                    <p>Создание устройств Интернета вещей на базе ESP32 и других микроконтроллеров с беспроводной связью.</p>
+                </div>
+                
+                <div class="activity-card">
+                    <div class="activity-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Обучение и сообщество</h3>
+                    <p>Проведение воркшопов, обмен знаниями и развитие сообщества энтузиастов embedded-разработки.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Свяжитесь с нами</h2>
+                <p>Присоединяйтесь к нашей команде или задайте вопросы о нашей деятельности</p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Давайте работать вместе</h3>
+                    <p>Мы всегда открыты для новых участников, интересных проектов и сотрудничества. Если вам интересны микроконтроллеры, одноплатные компьютеры или создание операционных систем - присоединяйтесь к нам!</p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <h4>Присоединиться к команде</h4>
+                                <p>Ищем энтузиастов embedded-разработки</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div>
+                                <h4>Предложить проект</h4>
+                                <p>Есть интересная идея? Давайте обсудим!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <div>
+                                <h4>Задать вопрос</h4>
+                                <p>Поможем разобраться с микроконтроллерами</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div style="margin-bottom: 20px;">
+                            <input type="text" placeholder="Ваше имя" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <input type="email" placeholder="Ваш email" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <select style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; background-color: white;">
+                                <option value="">Выберите тему</option>
+                                <option value="join">Присоединиться к команде</option>
+                                <option value="project">Предложить проект</option>
+                                <option value="question">Задать вопрос</option>
+                                <option value="other">Другое</option>
+                            </select>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <textarea placeholder="Ваше сообщение" rows="5" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn" style="width: 100%;">Отправить сообщение</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>Zero <span>Technologies</span></h3>
+                    <p>Команда по изучению микроконтроллеров и одноплатных компьютеров. Создаём код, операционные системы и дистрибутивы Linux.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Быстрые ссылки</h4>
+                    <ul>
+                        <li><a href="#home">Главная</a></li>
+                        <li><a href="#about">О нас</a></li>
+                        <li><a href="#hardware">Оборудование</a></li>
+                        <li><a href="#activities">Деятельность</a></li>
+                        <li><a href="#contact">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h4>Мы в соцсетях</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <p style="margin-top: 20px; color: #ccc;">Следите за нашими проектами и новостями</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Zero Technologies Team. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.');
+            this.reset();
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
